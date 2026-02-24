@@ -19,7 +19,7 @@
             --border-subtle: rgba(255, 255, 255, 0.05);
             --radius-lg: 24px;
             --radius-md: 16px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -56,14 +56,17 @@
             gap: 30px;
         }
 
-        .profile-card {
+        .profile-card, .widget, .section {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(12px);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .profile-card {
             padding: 40px 30px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             position: relative;
             overflow: hidden;
         }
@@ -141,12 +144,7 @@
         }
 
         .widget {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .widget-title {
@@ -178,12 +176,14 @@
             font-family: 'Fira Code', monospace;
             border: 1px solid rgba(14, 165, 233, 0.2);
             transition: var(--transition);
+            cursor: default;
         }
 
         .skill-tag:hover {
             background: var(--accent-primary);
             color: #fff;
             box-shadow: 0 0 15px var(--glow);
+            transform: translateY(-2px);
         }
 
         .cert-list {
@@ -217,12 +217,7 @@
         }
 
         .section {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
             padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .section-header {
@@ -254,7 +249,7 @@
             color: var(--text-primary);
         }
 
-        /* Timeline */
+        /* Timeline / Accordion */
         .timeline {
             position: relative;
             padding-left: 30px;
@@ -272,37 +267,62 @@
 
         .timeline-item {
             position: relative;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
+            background: var(--bg-surface-light);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            transition: var(--transition);
         }
 
-        .timeline-item:last-child {
-            margin-bottom: 0;
+        .timeline-item:hover {
+            border-color: rgba(14, 165, 233, 0.4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         .timeline-dot {
             position: absolute;
             left: -35px;
-            top: 5px;
+            top: 25px;
             width: 12px;
             height: 12px;
             background: var(--bg-surface);
             border: 2px solid var(--accent-primary);
             border-radius: 50%;
             box-shadow: 0 0 10px var(--glow);
+            z-index: 2;
+        }
+
+        /* Interactive Header */
+        .accordion-header {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .accordion-header-content {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
 
         .job-title {
             font-size: 1.25rem;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 5px;
+            transition: color 0.3s;
+        }
+
+        .accordion-header:hover .job-title {
+            color: var(--accent-secondary);
         }
 
         .job-meta {
             font-family: 'Fira Code', monospace;
             font-size: 0.85rem;
             color: var(--accent-secondary);
-            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -314,14 +334,61 @@
             border-radius: 6px;
         }
 
+        .toggle-icon {
+            color: var(--text-secondary);
+            transition: transform 0.4s ease;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        /* Accordion Content Hidden by default */
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+        }
+
+        .accordion-body-inner {
+            padding: 0 25px 25px 25px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        /* Active State */
+        .timeline-item.active .accordion-body {
+            max-height: 2000px; /* Grande o suficiente para o conteúdo */
+            transition: max-height 0.8s ease-in-out;
+        }
+
+        .timeline-item.active .accordion-body-inner {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.1s;
+        }
+
+        .timeline-item.active .toggle-icon {
+            transform: rotate(180deg);
+            background: var(--accent-primary);
+            color: #fff;
+            box-shadow: 0 0 10px var(--glow);
+        }
+
         .job-desc {
             list-style: none;
+            margin-top: 10px;
         }
 
         .job-desc li {
             position: relative;
             padding-left: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             color: var(--text-secondary);
             font-size: 0.95rem;
         }
@@ -340,12 +407,12 @@
             border-left: 3px solid var(--accent-primary);
             padding: 15px;
             border-radius: 0 var(--radius-md) var(--radius-md) 0;
-            margin-top: 15px;
+            margin-top: 20px;
             font-size: 0.9rem;
             color: var(--text-primary);
         }
 
-        /* Grid para Projetos */
+        /* Grid para Projetos - Interativo */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -358,6 +425,23 @@
             border-radius: var(--radius-md);
             padding: 25px;
             transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::after {
+            content: 'Clique para detalhes';
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--accent-secondary);
+            background: rgba(14, 165, 233, 0.1);
+            padding: 5px;
+            transition: var(--transition);
         }
 
         .project-card:hover {
@@ -366,15 +450,52 @@
             box-shadow: 0 10px 20px var(--glow);
         }
 
+        .project-card:hover::after {
+            bottom: 0;
+        }
+
         .project-title {
             font-size: 1.1rem;
             font-weight: 700;
             margin-bottom: 10px;
             color: var(--accent-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .project-desc {
             font-size: 0.9rem;
+            color: var(--text-secondary);
+            max-height: 60px; /* Preview height */
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            position: relative;
+        }
+
+        .project-desc::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(transparent, var(--bg-surface-light));
+            transition: opacity 0.3s;
+        }
+
+        .project-card.active .project-desc {
+            max-height: 500px;
+        }
+
+        .project-card.active .project-desc::after {
+            opacity: 0;
+        }
+        
+        .project-card.active::after {
+            content: 'Ocultar detalhes';
+            bottom: 0;
+            background: rgba(255,255,255,0.05);
             color: var(--text-secondary);
         }
 
@@ -400,7 +521,7 @@
         }
 
         .btn-pdf:hover {
-            transform: translateY(-5px) scale(1.02);
+            transform: translateY(-5px) scale(1.05);
             box-shadow: 0 15px 35px rgba(14, 165, 233, 0.5);
         }
 
@@ -411,55 +532,54 @@
                 background: #ffffff;
                 color: #111827;
                 background-image: none;
-                font-size: 11pt;
+                font-size: 10pt;
             }
             .container {
                 max-width: 100%;
                 margin: 0;
-                padding: 20px 40px;
-                grid-template-columns: 280px 1fr;
-                gap: 30px;
+                padding: 15px 30px;
+                grid-template-columns: 260px 1fr;
+                gap: 25px;
             }
-            .profile-card, .widget, .section, .project-card {
+            .profile-card, .widget, .section, .timeline-item, .project-card {
                 background: transparent;
                 border: none;
                 box-shadow: none;
                 padding: 0;
                 backdrop-filter: none;
             }
+            .timeline-item { margin-bottom: 20px; }
             .profile-card::before { display: none; }
-            .section { margin-bottom: 30px; }
+            .section { margin-bottom: 20px; }
             .section-header {
                 padding-bottom: 5px;
-                margin-bottom: 20px;
+                margin-bottom: 15px;
                 border-bottom: 2px solid #e5e7eb;
             }
-            .section-header i {
-                background: transparent;
-                padding: 0;
-                color: #0284c7;
-            }
-            .timeline::before { background: #e5e7eb; }
-            .timeline-dot { border-color: #0284c7; background: #fff; }
-            .avatar { border-color: #f3f4f6; box-shadow: none; width: 140px; height: 140px; }
-            .name { color: #111827; }
+            .section-header i { background: transparent; padding: 0; color: #0284c7; }
+            .timeline::before { background: #e5e7eb; top: 10px; }
+            .timeline-dot { border-color: #0284c7; background: #fff; top: 10px; }
+            
+            /* Forçar todos os Acordeões a aparecerem no PDF */
+            .accordion-body { max-height: none !important; overflow: visible !important; }
+            .accordion-body-inner { opacity: 1 !important; transform: translateY(0) !important; padding: 0 0 10px 0 !important; }
+            .accordion-header { padding: 0 0 10px 0 !important; pointer-events: none; }
+            .toggle-icon { display: none !important; }
+            .project-card .project-desc { max-height: none !important; }
+            .project-card .project-desc::after { display: none !important; }
+            .project-card::after { display: none !important; }
+
+            .avatar { border-color: #f3f4f6; box-shadow: none; width: 130px; height: 130px; }
+            .name { color: #111827; font-size: 1.5rem; }
             .title, .job-meta span, .project-title, .widget-title { color: #0284c7; }
             .job-meta span { background: transparent; padding: 0; font-weight: 600; }
             .text-secondary, .summary-text, .job-desc li { color: #374151; }
             .summary-text strong { color: #111827; }
-            .skill-tag {
-                background: #f0f9ff;
-                border: 1px solid #bae6fd;
-                color: #0369a1;
-            }
-            .highlight-box {
-                background: #f8fafc;
-                border-left-color: #0284c7;
-                color: #1f2937;
-            }
+            .skill-tag { background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; padding: 4px 8px; }
+            .highlight-box { background: #f8fafc; border-left-color: #0284c7; color: #1f2937; padding: 10px; margin-top: 10px; }
             .btn-pdf { display: none; }
             .projects-grid { grid-template-columns: 1fr; gap: 15px; }
-            .project-card { border-left: 2px solid #e5e7eb; padding-left: 15px; border-radius: 0; }
+            .project-card { border-left: 2px solid #e5e7eb; padding-left: 15px; border-radius: 0; margin-bottom: 15px; }
         }
 
         /* Responsividade Mobile */
@@ -467,6 +587,9 @@
             .container { grid-template-columns: 1fr; padding: 20px; }
             .sidebar { display: grid; grid-template-columns: 1fr; gap: 20px; }
             .btn-pdf { bottom: 20px; right: 20px; padding: 12px 20px; font-size: 0.9rem; }
+            .timeline-dot { display: none; }
+            .timeline::before { display: none; }
+            .timeline { padding-left: 0; }
         }
     </style>
 </head>
@@ -553,120 +676,167 @@
             </section>
 
             <section class="section">
-                <h2 class="section-header"><i class="fas fa-laptop-code"></i> Experiência Profissional</h2>
+                <h2 class="section-header"><i class="fas fa-laptop-code"></i> Experiência Profissional <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-secondary); margin-left: auto;">(Clique para expandir)</span></h2>
                 <div class="timeline">
                     
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <h3 class="job-title">Administrador / Gerente de Banco de Dados</h3>
-                        <div class="job-meta">
-                            <span>Central IT</span> <span>02/2023 – Presente</span>
+                    <div class="timeline-item active"> <div class="timeline-dot"></div>
+                        
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-header-content">
+                                <h3 class="job-title">Administrador / Gerente de Banco de Dados</h3>
+                                <div class="job-meta">
+                                    <span>Central IT</span> <span>02/2023 – Presente</span>
+                                </div>
+                            </div>
+                            <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
                         </div>
-                        <ul class="job-desc">
-                            <li>Liderança na administração e sustentação de recursos de banco de dados multicloud e on-premise (Oracle EXACC, Postgres, MySQL, SQL Server, MongoDB, RDS, Aurora) de altíssima criticidade para o Ministério da Saúde.</li>
-                            <li>Arquiteto e Engenheiro de Dados focado no desenvolvimento de pipelines avançados utilizando <strong>Apache NiFi, PowerCenter, Airflow e Python</strong> para automação de processos massivos de ETL.</li>
-                            <li>Criação e manutenção de dashboards gerenciais complexos em Power BI com modelagem avançada em DAX para apoiar a tomada de decisão executiva.</li>
-                            <li>Gestão de capacidade, disponibilidade e liderança técnica na modernização contínua dos sistemas tecnológicos corporativos.</li>
-                            <li> Otimização preditiva de queries, tuning e detecção de anomalias na infraestrutura antes que afetem a disponibilidade do banco de dados.</li>
-                        </ul>
+
+                        <div class="accordion-body">
+                            <div class="accordion-body-inner">
+                                <ul class="job-desc">
+                                    <li>Liderança na administração e sustentação de recursos de banco de dados multicloud e on-premise (Oracle EXACC, Postgres, MySQL, SQL Server, MongoDB, RDS, Aurora) de altíssima criticidade para o Ministério da Saúde.</li>
+                                    <li>Arquiteto e Engenheiro de Dados focado no desenvolvimento de pipelines avançados utilizando <strong>Apache NiFi, PowerCenter, Airflow e Python</strong> para automação de processos massivos de ETL.</li>
+                                    <li>Criação e manutenção de dashboards gerenciais complexos em Power BI com modelagem avançada em DAX para apoiar a tomada de decisão executiva.</li>
+                                    <li>Gestão de capacidade, disponibilidade e liderança técnica na modernização contínua dos sistemas tecnológicos corporativos.</li>
+                                    <li>Otimização preditiva de queries, tuning e detecção de anomalias na infraestrutura antes que afetem a disponibilidade do banco de dados.</li>
+                                </ul>
+                                <div class="highlight-box">
+                                    <strong><i class="fas fa-robot"></i> AI & Automation Impact:</strong> Implementação de rotinas em Python utilizando inteligência artificial para otimização preditiva de queries, tuning autônomo e detecção de anomalias na infraestrutura.
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        <h3 class="job-title">Fundador & Consultor de Tecnologia</h3>
-                        <div class="job-meta">
-                            <span>TechnoBolt Solutions</span> <span>12/2025 – Presente</span>
+                        
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-header-content">
+                                <h3 class="job-title">Fundador & Consultor de Tecnologia</h3>
+                                <div class="job-meta">
+                                    <span>TechnoBolt Solutions</span> <span>12/2025 – Presente</span>
+                                </div>
+                            </div>
+                            <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
                         </div>
-                        <ul class="job-desc">
-                            <li>Liderança de consultoria tecnológica B2B focada em transformação digital, estruturação de planos de negócios técnicos e engenharia de software sob medida.</li>
-                            <li>Desenho e implementação de arquiteturas modernas que integram bancos de dados em nuvem com camadas de aplicação escaláveis.</li>
-                        </ul>
-                        <div class="highlight-box">
-                            <strong>AI Integration:</strong> Consultoria especializada para empresas na adoção de modelos de Inteligência Artificial para automação de processos corporativos (RPA inteligente) e extração de insights de negócios através de Machine Learning integrado ao Power BI.
+
+                        <div class="accordion-body">
+                            <div class="accordion-body-inner">
+                                <ul class="job-desc">
+                                    <li>Liderança de consultoria tecnológica B2B focada em transformação digital, estruturação de planos de negócios técnicos e engenharia de software sob medida.</li>
+                                    <li>Desenho e implementação de arquiteturas modernas que integram bancos de dados em nuvem com camadas de aplicação escaláveis.</li>
+                                </ul>
+                                <div class="highlight-box">
+                                    <strong><i class="fas fa-network-wired"></i> AI Integration:</strong> Consultoria especializada para empresas na adoção de modelos de IA para automação corporativa (RPA inteligente) e extração de insights com Machine Learning integrado ao Power BI.
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        <h3 class="job-title">Consultor de Processos em ITSM</h3>
-                        <div class="job-meta">
-                            <span>ITSM-UNLIMIT</span> <span>08/2022 – Presente</span>
+                        
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-header-content">
+                                <h3 class="job-title">Consultor de Processos em ITSM</h3>
+                                <div class="job-meta">
+                                    <span>ITSM-UNLIMIT</span> <span>08/2022 – Presente</span>
+                                </div>
+                            </div>
+                            <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
                         </div>
-                        <ul class="job-desc">
-                            <li>Mapeamento, estruturação, implementação e gestão rigorosa de processos de TI baseados no framework ITIL e metodologias ágeis.</li>
-                            <li>Gerenciamento de fluxos e demandas complexas no JIRA (implementação de formulários de requisições e automações de workflow).</li>
-                            <li>Apuração técnica e gestão de indicadores de desempenho (KPIs) para alinhamento e auditoria estratégica.</li>
-                        </ul>
+
+                        <div class="accordion-body">
+                            <div class="accordion-body-inner">
+                                <ul class="job-desc">
+                                    <li>Mapeamento, estruturação, implementação e gestão rigorosa de processos de TI baseados no framework ITIL e metodologias ágeis.</li>
+                                    <li>Gerenciamento de fluxos e demandas complexas no JIRA (implementação de formulários de requisições e automações de workflow).</li>
+                                    <li>Apuração técnica e gestão de indicadores de desempenho (KPIs) para alinhamento e auditoria estratégica.</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        <h3 class="job-title">Analista de Qualidade de TI (Júnior a Pleno)</h3>
-                        <div class="job-meta">
-                            <span>Central IT</span> <span>11/2018 – 02/2023</span>
+                        
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-header-content">
+                                <h3 class="job-title">Analista de Qualidade de TI (Jr a Pleno)</h3>
+                                <div class="job-meta">
+                                    <span>Central IT</span> <span>11/2018 – 02/2023</span>
+                                </div>
+                            </div>
+                            <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
                         </div>
-                        <ul class="job-desc">
-                            <li>Evolução interna de carreira (Júnior: 11/2018 - 05/2020 | Pleno: 05/2020 - 02/2023) liderando o desenho e gestão integral de processos ITIL (Incidentes, Problemas, Mudanças, Capacidade e Disponibilidade).</li>
-                            <li>Gestão técnica de fornecedores (Operadoras) atuantes no órgão público.</li>
-                            <li>Desenvolvimento de relatórios analíticos, modelagem via Bizagi e execução de cargas de dados complexas via ETL (PowerCenter) para construção de dashboards estratégicos.</li>
-                        </ul>
+
+                        <div class="accordion-body">
+                            <div class="accordion-body-inner">
+                                <ul class="job-desc">
+                                    <li>Evolução interna de carreira (Júnior a Pleno) liderando o desenho e gestão integral de processos ITIL (Incidentes, Problemas, Mudanças, Capacidade e Disponibilidade).</li>
+                                    <li>Gestão técnica de fornecedores (Operadoras) atuantes no órgão público.</li>
+                                    <li>Desenvolvimento de relatórios analíticos, modelagem via Bizagi e execução de cargas de dados complexas via ETL (PowerCenter) para construção de dashboards estratégicos.</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        <h3 class="job-title">Suporte Técnico N1</h3>
-                        <div class="job-meta">
-                            <span>Central IT</span> <span>07/2014 – 06/2016</span>
+                        
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-header-content">
+                                <h3 class="job-title">Histórico Inicial: Suporte N1 & Estágio TI</h3>
+                                <div class="job-meta">
+                                    <span>Central IT & CIEE</span> <span>04/2010 – 06/2016</span>
+                                </div>
+                            </div>
+                            <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
                         </div>
-                        <ul class="job-desc">
-                            <li>Controle técnico de chamados, auditoria de operadores, coordenação da base de conhecimento local e atendimento especializado (1º e 2º nível) ao DNIT e SEFAZ-GO.</li>
-                        </ul>
-                    </div>
 
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <h3 class="job-title">Estagiário de TI</h3>
-                        <div class="job-meta">
-                            <span>CIEE (Secretaria de Saúde do DF)</span> <span>04/2010 – 12/2012</span>
+                        <div class="accordion-body">
+                            <div class="accordion-body-inner">
+                                <ul class="job-desc">
+                                    <li><strong>Suporte Técnico N1 (07/2014 – 06/2016):</strong> Controle de chamados, auditoria de operadores, gestão da base de conhecimento e atendimento especializado ao DNIT e SEFAZ-GO.</li>
+                                    <li><strong>Estagiário de TI (04/2010 – 12/2012):</strong> Apoio em TI na Secretaria de Saúde do DF, com confecção de relatórios analíticos para a Ouvidoria da Saúde.</li>
+                                </ul>
+                            </div>
                         </div>
-                        <ul class="job-desc">
-                            <li>Apoio central em tecnologia da informação, com destaque na confecção de relatórios analíticos complexos para controle e auditoria da Ouvidoria da Saúde.</li>
-                        </ul>
                     </div>
 
                 </div>
             </section>
 
             <section class="section">
-                <h2 class="section-header"><i class="fas fa-layer-group"></i> Projetos de Engenharia & Software</h2>
+                <h2 class="section-header"><i class="fas fa-layer-group"></i> Projetos de Destaque</h2>
                 <div class="projects-grid">
                     
-                    <div class="project-card">
-                        <h3 class="project-title">TechnoBolt Solutions (Ecossistema B2B)</h3>
-                        <p class="project-desc">
+                    <div class="project-card" onclick="this.classList.toggle('active')">
+                        <h3 class="project-title">TechnoBolt Solutions <i class="fas fa-expand-alt" style="font-size: 0.8rem;"></i></h3>
+                        <div class="project-desc">
                             Arquiteto principal e desenvolvedor de um ecossistema de soluções tecnológicas B2B pela <strong>TechnoBolt Solutions</strong>, integrando lógica de negócios complexa, Inteligência Artificial e gestão de dados escalável. O projeto engloba modelagem avançada, desenvolvimento de APIs e automação corporativa em tempo real.
-                        </p>
+                        </div>
                     </div>
 
-                    <div class="project-card">
-                        <h3 class="project-title">Pipelines Python & RNDS (Min. da Saúde)</h3>
-                        <p class="project-desc">
+                    <div class="project-card" onclick="this.classList.toggle('active')">
+                        <h3 class="project-title">Pipelines RNDS (Min. Saúde) <i class="fas fa-expand-alt" style="font-size: 0.8rem;"></i></h3>
+                        <div class="project-desc">
                             Engenharia e implementação de pipelines críticos de processamento de dados massivos escritos em Python para a Rede Nacional de Dados em Saúde (RNDS) do Brasil. O projeto integrou múltiplos data lakes, garantindo conformidade, segurança, higienização dos dados e altíssima performance de disponibilidade.
-                        </p>
+                        </div>
                     </div>
 
-                    <div class="project-card">
-                        <h3 class="project-title">BI Executivo Institucional (Min. da Saúde)</h3>
-                        <p class="project-desc">
-                            Projeto analítico de grande escala onde estruturei os Data Marts e desenvolvi 60 dashboards interativos avançados (utilizando DAX profundo) para a gestão técnica de infraestrutura, permitindo uma visão executiva em tempo real dos SLAs, consumo de nuvem e estabilidade dos bancos de dados.
-                        </p>
+                    <div class="project-card" onclick="this.classList.toggle('active')">
+                        <h3 class="project-title">BI Executivo Institucional <i class="fas fa-expand-alt" style="font-size: 0.8rem;"></i></h3>
+                        <div class="project-desc">
+                            Projeto analítico de grande escala onde estruturei os Data Marts e desenvolvi 60 dashboards interativos avançados (utilizando DAX profundo) para a gestão técnica de infraestrutura, permitindo uma visão executiva em tempo real dos SLAs, consumo de nuvem e estabilidade dos bancos de dados no Ministério da Saúde.
+                        </div>
                     </div>
 
-                    <div class="project-card">
-                        <h3 class="project-title">Otimização Cloud MultiTenant (TCU)</h3>
-                        <p class="project-desc">
+                    <div class="project-card" onclick="this.classList.toggle('active')">
+                        <h3 class="project-title">Otimização Cloud (TCU) <i class="fas fa-expand-alt" style="font-size: 0.8rem;"></i></h3>
+                        <div class="project-desc">
                             Liderança técnica na estruturação de processos de eficiência e otimização de infraestrutura no Tribunal de Contas da União. Projeto envolveu planejamento arquitetural e implementação nativa de banco de dados em formato Oracle Multitenant, visando severa redução de custos computacionais e escalabilidade elástica.
-                        </p>
+                        </div>
                     </div>
 
                 </div>
@@ -674,20 +844,16 @@
 
             <section class="section">
                 <h2 class="section-header"><i class="fas fa-graduation-cap"></i> Formação Acadêmica</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <h3 class="job-title">Pós-Graduação em Data Science and Big Data Analytics</h3>
-                        <div class="job-meta">
-                            <span>Alphaville</span> <span>06/2022 – 06/2023</span>
-                        </div>
+                <div class="timeline" style="margin-top: 20px;">
+                    <div class="timeline-item" style="background: transparent; border: none; box-shadow: none; margin-bottom: 15px;">
+                        <div class="timeline-dot" style="top: 5px; background: var(--accent-primary);"></div>
+                        <h3 class="job-title" style="font-size: 1.1rem;">Pós-Graduação em Data Science and Big Data Analytics</h3>
+                        <div class="job-meta"><span>Alphaville</span> <span>06/2022 – 06/2023</span></div>
                     </div>
-                    <div class="timeline-item" style="margin-bottom: 0;">
-                        <div class="timeline-dot"></div>
-                        <h3 class="job-title">Graduação em Segurança da Informação (Tecnólogo)</h3>
-                        <div class="job-meta">
-                            <span>IESB - Instituto de Educação Superior de Brasília</span> <span>2012 – 2015</span>
-                        </div>
+                    <div class="timeline-item" style="background: transparent; border: none; box-shadow: none; margin-bottom: 0;">
+                        <div class="timeline-dot" style="top: 5px; background: var(--accent-primary);"></div>
+                        <h3 class="job-title" style="font-size: 1.1rem;">Graduação em Segurança da Informação (Tecnólogo)</h3>
+                        <div class="job-meta"><span>IESB - Inst. de Educação Superior de Brasília</span> <span>2012 – 2015</span></div>
                     </div>
                 </div>
             </section>
@@ -695,5 +861,20 @@
         </main>
     </div>
 
+    <script>
+        function toggleAccordion(element) {
+            // Alterna a classe 'active' no elemento pai (.timeline-item)
+            const parentItem = element.parentElement;
+            
+            // Lógica opcional: Descomente as linhas abaixo se quiser que apenas UMA aba fique aberta por vez
+            /*
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                if(item !== parentItem) item.classList.remove('active');
+            });
+            */
+            
+            parentItem.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
