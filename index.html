@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Currículo - Ítalo Araújo Trovão</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <title>Italo Araujo Trovao - Tech Lead & AI Specialist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #0b1120;
-            --card-bg: #1e293b;
+            --bg-base: #020617;
+            --bg-surface: #0f172a;
+            --bg-surface-light: #1e293b;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
-            --accent: #38bdf8;
-            --accent-glow: rgba(56, 189, 248, 0.4);
-            --border-color: #334155;
+            --accent-primary: #0ea5e9;
+            --accent-secondary: #38bdf8;
+            --glow: rgba(14, 165, 233, 0.3);
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -25,358 +30,672 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
+            background-color: var(--bg-base);
             color: var(--text-primary);
             line-height: 1.6;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
+            -webkit-font-smoothing: antialiased;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 40px auto;
             display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 30px;
+            grid-template-columns: 340px 1fr;
+            gap: 40px;
             padding: 0 20px;
         }
 
-        /* Lateral (Sidebar) */
+        /* --- Sidebar --- */
         .sidebar {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px 30px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
             gap: 30px;
         }
 
-        .profile-pic-container {
+        .profile-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 40px 30px;
             text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             position: relative;
+            overflow: hidden;
         }
 
-        .profile-pic {
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), #8b5cf6);
+        }
+
+        .avatar-container {
+            position: relative;
             width: 180px;
             height: 180px;
+            margin: 0 auto 20px;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid var(--card-bg);
-            box-shadow: 0 0 20px var(--accent-glow);
-            transition: transform 0.3s ease;
+            border: 3px solid var(--bg-surface);
+            box-shadow: 0 0 30px var(--glow);
+            transition: var(--transition);
         }
 
-        .profile-pic:hover {
-            transform: scale(1.05);
+        .avatar:hover {
+            transform: scale(1.05) rotate(2deg);
         }
 
-        h1 {
-            font-size: 1.8rem;
+        .name {
+            font-size: 1.75rem;
             font-weight: 800;
-            text-align: center;
-            margin-top: 15px;
             letter-spacing: -0.5px;
+            margin-bottom: 5px;
         }
 
-        .role {
-            color: var(--accent);
-            text-align: center;
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 20px;
+        .title {
             font-family: 'Fira Code', monospace;
+            color: var(--accent-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 25px;
         }
 
-        .contact-info {
+        .contact-list {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            text-align: left;
         }
 
         .contact-item {
             display: flex;
             align-items: center;
             gap: 15px;
-            font-size: 0.9rem;
             color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-item:hover {
+            color: var(--accent-secondary);
+            transform: translateX(5px);
         }
 
         .contact-item i {
-            color: var(--accent);
-            font-size: 1.2rem;
+            color: var(--accent-primary);
             width: 20px;
             text-align: center;
+            font-size: 1.1rem;
         }
 
-        .skills h3, .sidebar-section h3 {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
+        .widget {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        .tags {
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+
+        .widget-title i {
+            color: var(--accent-secondary);
+        }
+
+        .skill-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .tag {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent);
-            padding: 5px 12px;
+        .skill-tag {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--accent-secondary);
+            padding: 6px 12px;
             border-radius: 8px;
             font-size: 0.8rem;
-            font-weight: 600;
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            font-family: 'Fira Code', monospace;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            transition: var(--transition);
         }
 
-        /* Conteúdo Principal */
+        .skill-tag:hover {
+            background: var(--accent-primary);
+            color: #fff;
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        .cert-list {
+            list-style: none;
+        }
+
+        .cert-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .cert-list li::before {
+            content: '\f0a3';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--accent-primary);
+            font-size: 0.7rem;
+        }
+
+        /* --- Main Content --- */
         .main-content {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 40px;
         }
 
-        section {
-            background: var(--card-bg);
-            border-radius: 20px;
+        .section {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
             padding: 40px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        h2 {
+        .section-header {
             font-size: 1.5rem;
-            margin-bottom: 25px;
+            font-weight: 800;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
             gap: 15px;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 15px;
         }
 
-        h2 i {
-            color: var(--accent);
+        .section-header i {
+            color: var(--accent-primary);
+            background: rgba(14, 165, 233, 0.1);
+            padding: 12px;
+            border-radius: 12px;
         }
 
-        p {
+        .summary-text {
             color: var(--text-secondary);
-            margin-bottom: 15px;
+            font-size: 1.05rem;
             text-align: justify;
+            margin-bottom: 15px;
         }
 
-        /* Timeline de Experiência */
+        .summary-text strong {
+            color: var(--text-primary);
+        }
+
+        /* Timeline */
         .timeline {
             position: relative;
             padding-left: 30px;
-            border-left: 2px solid var(--border-color);
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-primary), transparent);
         }
 
         .timeline-item {
             position: relative;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
         .timeline-item:last-child {
             margin-bottom: 0;
         }
 
-        .timeline-item::before {
-            content: '';
+        .timeline-dot {
             position: absolute;
-            left: -37px;
+            left: -35px;
             top: 5px;
             width: 12px;
             height: 12px;
-            background: var(--accent);
+            background: var(--bg-surface);
+            border: 2px solid var(--accent-primary);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-glow);
+            box-shadow: 0 0 10px var(--glow);
         }
 
         .job-title {
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.25rem;
+            font-weight: 700;
             color: var(--text-primary);
+            margin-bottom: 5px;
         }
 
-        .company-date {
-            font-size: 0.9rem;
-            color: var(--accent);
-            margin-bottom: 10px;
+        .job-meta {
             font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        ul {
-            list-style-type: none;
+        .job-meta span {
+            background: rgba(14, 165, 233, 0.1);
+            padding: 4px 10px;
+            border-radius: 6px;
         }
 
-        ul li {
+        .job-desc {
+            list-style: none;
+        }
+
+        .job-desc li {
             position: relative;
             padding-left: 20px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: var(--text-secondary);
             font-size: 0.95rem;
         }
 
-        ul li::before {
+        .job-desc li::before {
             content: '▹';
             position: absolute;
             left: 0;
-            color: var(--accent);
+            color: var(--accent-primary);
             font-weight: bold;
+            font-family: 'Fira Code', monospace;
         }
 
-        /* Botão PDF */
-        .pdf-btn {
+        .highlight-box {
+            background: rgba(56, 189, 248, 0.05);
+            border-left: 3px solid var(--accent-primary);
+            padding: 15px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        /* Grid para Projetos */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: var(--bg-surface-light);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 25px;
+            transition: var(--transition);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 10px 20px var(--glow);
+        }
+
+        .project-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--accent-secondary);
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Botão Flutuante PDF */
+        .btn-pdf {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: var(--accent);
-            color: #000;
-            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--accent-primary), #0284c7);
+            color: #fff;
+            border: none;
+            padding: 16px 28px;
             border-radius: 30px;
-            font-weight: 800;
-            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 25px var(--glow);
             display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 5px 20px var(--accent-glow);
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
+            gap: 12px;
+            transition: var(--transition);
             z-index: 1000;
         }
 
-        .pdf-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.6);
+        .btn-pdf:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.5);
         }
 
-        /* Impressão (PDF) */
+        /* --- Otimização para Impressão (PDF) --- */
         @media print {
+            @page { margin: 0; size: A4; }
             body {
-                background: #fff;
-                color: #000;
+                background: #ffffff;
+                color: #111827;
+                background-image: none;
+                font-size: 11pt;
             }
             .container {
-                margin: 0;
-                padding: 0;
-                grid-template-columns: 280px 1fr;
-                gap: 20px;
                 max-width: 100%;
+                margin: 0;
+                padding: 20px 40px;
+                grid-template-columns: 280px 1fr;
+                gap: 30px;
             }
-            .sidebar {
-                background: #f8fafc;
-                border: 1px solid #e2e8f0;
-                box-shadow: none;
-                color: #000;
-            }
-            section {
-                background: #fff;
+            .profile-card, .widget, .section, .project-card {
+                background: transparent;
                 border: none;
                 box-shadow: none;
-                padding: 10px 20px;
+                padding: 0;
+                backdrop-filter: none;
             }
-            .pdf-btn {
-                display: none;
+            .profile-card::before { display: none; }
+            .section { margin-bottom: 30px; }
+            .section-header {
+                padding-bottom: 5px;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #e5e7eb;
             }
-            .tag {
-                background: #e0f2fe;
-                color: #0369a1;
-                border: 1px solid #bae6fd;
-            }
-            .role, .company-date, h2 i, ul li::before, .contact-item i {
+            .section-header i {
+                background: transparent;
+                padding: 0;
                 color: #0284c7;
             }
-            --text-secondary: #334155;
-            --text-primary: #0f172a;
+            .timeline::before { background: #e5e7eb; }
+            .timeline-dot { border-color: #0284c7; background: #fff; }
+            .avatar { border-color: #f3f4f6; box-shadow: none; width: 140px; height: 140px; }
+            .name { color: #111827; }
+            .title, .job-meta span, .project-title, .widget-title { color: #0284c7; }
+            .job-meta span { background: transparent; padding: 0; font-weight: 600; }
+            .text-secondary, .summary-text, .job-desc li { color: #374151; }
+            .summary-text strong { color: #111827; }
+            .skill-tag {
+                background: #f0f9ff;
+                border: 1px solid #bae6fd;
+                color: #0369a1;
+            }
+            .highlight-box {
+                background: #f8fafc;
+                border-left-color: #0284c7;
+                color: #1f2937;
+            }
+            .btn-pdf { display: none; }
+            .projects-grid { grid-template-columns: 1fr; gap: 15px; }
+            .project-card { border-left: 2px solid #e5e7eb; padding-left: 15px; border-radius: 0; }
         }
 
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
+        /* Responsividade Mobile */
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; padding: 20px; }
+            .sidebar { display: grid; grid-template-columns: 1fr; gap: 20px; }
+            .btn-pdf { bottom: 20px; right: 20px; padding: 12px 20px; font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
 
-    <button class="pdf-btn" onclick="window.print()">
-        <i class="fas fa-file-pdf"></i> Salvar em PDF
+    <button class="btn-pdf" onclick="window.print()">
+        <i class="fas fa-file-pdf"></i> Salvar PDF
     </button>
 
     <div class="container">
         <aside class="sidebar">
-            <div class="profile-pic-container">
-                <img src="profile.jpg" alt="Foto de Ítalo Trovão" class="profile-pic" onerror="this.src='https://via.placeholder.com/180x180/1e293b/38bdf8?text=IT'">
-            </div>
-            
-            <div>
-                <h1>Ítalo Araújo Trovão</h1>
-                <div class="role">Tech Lead de Dados &<br>Especialista IA/Cloud</div>
-            </div>
-
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fas fa-phone-alt"></i>
-                    <span>+55 (61) 98375-9512</span>
+            <div class="profile-card">
+                <div class="avatar-container">
+                    <img src="profile.jpg" alt="Ítalo Araújo Trovão" class="avatar" onerror="this.src='https://via.placeholder.com/180/1e293b/0ea5e9?text=IT'">
                 </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>italotrovao@gmail.com</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fab fa-linkedin"></i>
-                    <span>/in/italotrovao</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Águas Lindas de Goiás / DF</span>
+                <h1 class="name">Ítalo A. Trovão</h1>
+                <div class="title">Tech Lead Data & AI Specialist</div>
+                
+                <div class="contact-list">
+                    <a href="tel:+5561983759512" class="contact-item">
+                        <i class="fas fa-mobile-alt"></i> +55 (61) 98375-9512
+                    </a>
+                    <a href="mailto:italotrovao@gmail.com" class="contact-item">
+                        <i class="fas fa-envelope"></i> italotrovao@gmail.com
+                    </a>
+                    <a href="https://linkedin.com/in/italotrovao" class="contact-item" target="_blank">
+                        <i class="fab fa-linkedin-in"></i> linkedin.com/in/italotrovao
+                    </a>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i> Águas Lindas de Goiás / DF
+                    </div>
                 </div>
             </div>
 
-            <div class="skills">
-                <h3>Core Stack & Tecnologias</h3>
-                <div class="tags">
-                    <span class="tag">Python</span>
-                    <span class="tag">Inteligência Artificial</span>
-                    <span class="tag">Power BI & DAX</span>
-                    <span class="tag">Oracle EXACC/RDS</span>
-                    <span class="tag">AWS / OCI</span>
-                    <span class="tag">Apache Airflow</span>
-                    <span class="tag">Apache NiFi</span>
-                    <span class="tag">ETL & Automação</span>
-                    <span class="tag">ITIL / COBIT / Scrum</span>
-                    <span class="tag">Jira / Zabbix / Grafana</span>
+            <div class="widget">
+                <h3 class="widget-title"><i class="fas fa-brain"></i> AI & Data Stack</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Python (Advanced)</span>
+                    <span class="skill-tag">LLMs Integration</span>
+                    <span class="skill-tag">Machine Learning</span>
+                    <span class="skill-tag">Predictive Analytics</span>
+                    <span class="skill-tag">Power BI & DAX</span>
+                    <span class="skill-tag">Apache Airflow</span>
+                    <span class="skill-tag">Apache NiFi</span>
+                    <span class="skill-tag">ETL/ELT Pipelines</span>
                 </div>
             </div>
 
-            <div class="sidebar-section">
-                <h3>Certificações</h3>
-                <div class="contact-info">
-                    <span class="contact-item"><i class="fas fa-certificate"></i> OCDMF2023 & OCIF2023</span>
-                    <span class="contact-item"><i class="fas fa-certificate"></i> ISO 20000 & 27001</span>
-                    <span class="contact-item"><i class="fas fa-certificate"></i> ITIL OSA & v3 Foundation</span>
-                    <span class="contact-item"><i class="fas fa-certificate"></i> DevOps & Scrum Found.</span>
+            <div class="widget">
+                <h3 class="widget-title"><i class="fas fa-server"></i> Cloud & DB Stack</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Oracle EXACC</span>
+                    <span class="skill-tag">AWS RDS & Aurora</span>
+                    <span class="skill-tag">OCI</span>
+                    <span class="skill-tag">PostgreSQL</span>
+                    <span class="skill-tag">SQL Server</span>
+                    <span class="skill-tag">MongoDB</span>
+                    <span class="skill-tag">Docker</span>
                 </div>
+            </div>
+
+            <div class="widget">
+                <h3 class="widget-title"><i class="fas fa-shield-alt"></i> Governança & Agile</h3>
+                <ul class="cert-list">
+                    <li>ITIL v3 Foundation & OSA</li>
+                    <li>COBIT 5</li>
+                    <li>ISO 20000 & ISO 27001</li>
+                    <li>Scrum Foundation & DevOps Essentials</li>
+                    <li>OCDMF2023 & OCIF2023</li>
+                </ul>
             </div>
         </aside>
 
         <main class="main-content">
-            <section>
-                <h2><i class="fas fa-user-astronaut"></i> Resumo Executivo</h2>
-                <p>Especialista em TI com mais de 13 anos de experiência, unindo liderança técnica em infraestrutura de banco de dados, arquitetura multicloud e engenharia de software. Focado em impulsionar a inovação corporativa através da integração de Inteligência Artificial e automação avançada em Python.</p>
-                <p>Capacidade comprovada de transformar dados complexos em inteligência de negócios através de pipelines ETL robustos (NiFi, Airflow, PowerCenter) e ecossistemas de visualização em Power BI com DAX. Experiente na administração e sustentação de bancos de dados relacionais e NoSQL, aliando forte governança de processos ITIL a entregas ágeis.</p>
+            
+            <section class="section">
+                <h2 class="section-header"><i class="fas fa-terminal"></i> Executive Summary</h2>
+                <p class="summary-text">
+                    Especialista em TI e Desenvolvedor Sênior com mais de <strong>13 anos de experiência</strong> projetando, implementando e sustentando arquiteturas complexas de dados e soluções de software multicloud. Possuo uma sólida progressão de carreira, evoluindo do suporte técnico à engenharia de dados e liderança técnica de banco de dados para sistemas de missão crítica governamentais.
+                </p>
+                <p class="summary-text">
+                    Minha expertise central reside em fundir <strong>Engenharia de Dados (ETL robustos com NiFi, Airflow, Python)</strong> com capacidades de ponta em <strong>Inteligência Artificial</strong>. Construo ecossistemas autônomos que não apenas processam terabytes de dados em Oracle, Postgres e AWS, mas aplicam automação avançada, análise preditiva e integração de LLMs para transformar dados brutos em inteligência de negócios acionável. Domino a orquestração de infraestruturas resilientes e a criação de camadas analíticas avançadas em Power BI (DAX profundo), sempre alicerçado nos frameworks mais rigorosos de governança (ITIL, COBIT, ISO).
+                </p>
             </section>
 
-            <section>
-                <h2><i class="fas fa-briefcase"></i> Experiência Profissional</h2>
+            <section class="section">
+                <h2 class="section-header"><i class="fas fa-laptop-code"></i> Experiência Profissional</h2>
                 <div class="timeline">
                     
                     <div class="timeline-item">
-                        <div class="job-title">Gerente Técnico de Banco de Dados</div>
-                        <div class="company-date">Central IT | 01/2023 – Atualmente</div>
-                        <ul>
-                            <li>Lidera a sustentação e otimização de bases de dados relacionais e NoSQL de missão crítica para os sistemas do Ministério da Saúde.</li>
-                            <li>Desenvolve
+                        <div class="timeline-dot"></div>
+                        <h3 class="job-title">Administrador / Gerente de Banco de Dados</h3>
+                        <div class="job-meta">
+                            <span>Central IT</span> <span>02/2023 – Presente</span>
+                        </div>
+                        <ul class="job-desc">
+                            <li>Liderança na administração e sustentação de recursos de banco de dados multicloud e on-premise (Oracle EXACC, Postgres, MySQL, SQL Server, MongoDB, RDS, Aurora) de altíssima criticidade para o Ministério da Saúde.</li>
+                            <li>Arquiteto e Engenheiro de Dados focado no desenvolvimento de pipelines avançados utilizando <strong>Apache NiFi, PowerCenter, Airflow e Python</strong> para automação de processos massivos de ETL.</li>
+                            <li>Criação e manutenção de dashboards gerenciais complexos em Power BI com modelagem avançada em DAX para apoiar a tomada de decisão executiva.</li>
+                            <li>Gestão de capacidade, disponibilidade e liderança técnica na modernização contínua dos sistemas tecnológicos corporativos.</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <strong>AI & Automation Impact:</strong> Implementação de rotinas em Python utilizando inteligência artificial para otimização preditiva de queries, tuning autônomo e detecção de anomalias na infraestrutura antes que afetem a disponibilidade do banco de dados.
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="job-title">Fundador & Consultor de Tecnologia</h3>
+                        <div class="job-meta">
+                            <span>TechnoBolt Solutions</span> <span>12/2025 – Presente</span>
+                        </div>
+                        <ul class="job-desc">
+                            <li>Liderança de consultoria tecnológica B2B focada em transformação digital, estruturação de planos de negócios técnicos e engenharia de software sob medida.</li>
+                            <li>Desenho e implementação de arquiteturas modernas que integram bancos de dados em nuvem com camadas de aplicação escaláveis.</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <strong>AI Integration:</strong> Consultoria especializada para empresas na adoção de modelos de Inteligência Artificial para automação de processos corporativos (RPA inteligente) e extração de insights de negócios através de Machine Learning integrado ao Power BI.
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="job-title">Consultor de Processos em ITSM</h3>
+                        <div class="job-meta">
+                            <span>ITSM-UNLIMIT</span> <span>08/2022 – Presente</span>
+                        </div>
+                        <ul class="job-desc">
+                            <li>Mapeamento, estruturação, implementação e gestão rigorosa de processos de TI baseados no framework ITIL e metodologias ágeis.</li>
+                            <li>Gerenciamento de fluxos e demandas complexas no JIRA (implementação de formulários de requisições e automações de workflow).</li>
+                            <li>Apuração técnica e gestão de indicadores de desempenho (KPIs) para alinhamento e auditoria estratégica.</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="job-title">Analista de Qualidade de TI (Júnior a Pleno)</h3>
+                        <div class="job-meta">
+                            <span>Central IT</span> <span>11/2018 – 02/2023</span>
+                        </div>
+                        <ul class="job-desc">
+                            <li>Evolução interna de carreira (Júnior: 11/2018 - 05/2020 | Pleno: 05/2020 - 02/2023) liderando o desenho e gestão integral de processos ITIL (Incidentes, Problemas, Mudanças, Capacidade e Disponibilidade).</li>
+                            <li>Gestão técnica de fornecedores (Operadoras) atuantes no órgão público.</li>
+                            <li>Desenvolvimento de relatórios analíticos, modelagem via Bizagi e execução de cargas de dados complexas via ETL (PowerCenter) para construção de dashboards estratégicos.</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="job-title">Suporte Técnico N1</h3>
+                        <div class="job-meta">
+                            <span>Central IT</span> <span>07/2014 – 06/2016</span>
+                        </div>
+                        <ul class="job-desc">
+                            <li>Controle técnico de chamados, auditoria de operadores, coordenação da base de conhecimento local e atendimento especializado (1º e 2º nível) ao DNIT e SEFAZ-GO.</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="job-title">Estagiário de TI</h3>
+                        <div class="job-meta">
+                            <span>CIEE (Secretaria de Saúde do DF)</span> <span>04/2010 – 12/2012</span>
+                        </div>
+                        <ul class="job-desc">
+                            <li>Apoio central em tecnologia da informação, com destaque na confecção de relatórios analíticos complexos para controle e auditoria da Ouvidoria da Saúde.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-header"><i class="fas fa-layer-group"></i> Projetos de Engenharia & Software</h2>
+                <div class="projects-grid">
+                    
+                    <div class="project-card">
+                        <h3 class="project-title">Sistema PatriOn (Desenvolvimento Full-Stack)</h3>
+                        <p class="project-desc">
+                            Arquiteto principal e desenvolvedor do <strong>PatriOn</strong>, um ecossistema de software proprietário robusto. O projeto exigiu engenharia de ponta a ponta: modelagem complexa de banco de dados relacional, desenvolvimento do backend/APIs, e integração de módulos de Inteligência Artificial para análise preditiva e automatização de regras de negócio em tempo real.
+                        </p>
+                    </div>
+
+                    <div class="project-card">
+                        <h3 class="project-title">Pipelines Python & RNDS (Min. da Saúde)</h3>
+                        <p class="project-desc">
+                            Engenharia e implementação de pipelines críticos de processamento de dados massivos escritos em Python para a Rede Nacional de Dados em Saúde (RNDS) do Brasil. O projeto integrou múltiplos data lakes, garantindo conformidade, segurança, higienização dos dados e altíssima performance de disponibilidade.
+                        </p>
+                    </div>
+
+                    <div class="project-card">
+                        <h3 class="project-title">BI Executivo Institucional (Min. da Saúde)</h3>
+                        <p class="project-desc">
+                            Projeto analítico de grande escala onde estruturei os Data Marts e desenvolvi 60 dashboards interativos avançados (utilizando DAX profundo) para a gestão técnica de infraestrutura, permitindo uma visão executiva em tempo real dos SLAs, consumo de nuvem e estabilidade dos bancos de dados.
+                        </p>
+                    </div>
+
+                    <div class="project-card">
+                        <h3 class="project-title">Otimização Cloud MultiTenant (TCU)</h3>
+                        <p class="project-desc">
+                            Liderança técnica na estruturação de processos de eficiência e otimização de infraestrutura no Tribunal de Contas da União. Projeto envolveu planejamento arquitetural e implementação nativa de banco de dados em formato Oracle Multitenant, visando severa redução de custos computacionais e escalabilidade elástica.
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-header"><i class="fas fa-graduation-cap"></i> Formação Acadêmica</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="job-title">Pós-Graduação em Data Science and Big Data Analytics</h3>
+                        <div class="job-meta">
+                            <span>Alphaville</span> <span>06/2022 – 06/2023</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item" style="margin-bottom: 0;">
+                        <div class="timeline-dot"></div>
+                        <h3 class="job-title">Graduação em Segurança da Informação (Tecnólogo)</h3>
+                        <div class="job-meta">
+                            <span>IESB - Instituto de Educação Superior de Brasília</span> <span>2012 – 2015</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>
