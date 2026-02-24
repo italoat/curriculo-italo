@@ -7,6 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ==========================================================================
+           1. VARIÁVEIS GLOBAIS (DESIGN SYSTEM)
+           ========================================================================== */
         :root {
             --bg-base: #020617;
             --bg-surface: #0f172a;
@@ -22,6 +25,9 @@
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* ==========================================================================
+           2. RESET E ESTILOS BASE
+           ========================================================================== */
         * {
             margin: 0;
             padding: 0;
@@ -34,10 +40,27 @@
             color: var(--text-primary);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            /* Background com padrão radial moderno */
             background-image: 
                 radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.15) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
             background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-base);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-surface-light);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
         }
 
         .container {
@@ -49,33 +72,73 @@
             padding: 0 20px;
         }
 
-        /* --- Sidebar --- */
+        /* ==========================================================================
+           3. CLASSES UTILITÁRIAS AVANÇADAS (INTERAÇÃO E ANIMAÇÃO)
+           ========================================================================== */
+        
+        /* Classe para animação de Scroll (Intersection Observer) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Classe para o Efeito Spotlight (Rastreamento de Mouse) */
+        .spotlight-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* O Pseudo-elemento que cria o brilho seguindo o mouse via variáveis CSS atualizadas no JS */
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(14, 165, 233, 0.08), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
+        /* O conteúdo dentro do card precisa ficar acima do brilho */
+        .spotlight-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ==========================================================================
+           4. SIDEBAR E PERFIL
+           ========================================================================== */
         .sidebar {
             display: flex;
             flex-direction: column;
             gap: 30px;
         }
 
-        .profile-card, .widget, .section {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
         .profile-card {
             padding: 40px 30px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
 
-        .profile-card::before {
+        .profile-card::after {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; height: 4px;
             background: linear-gradient(90deg, var(--accent-primary), #8b5cf6);
+            z-index: 3;
         }
 
         .avatar-container {
@@ -83,6 +146,7 @@
             width: 180px;
             height: 180px;
             margin: 0 auto 20px;
+            perspective: 1000px; /* Para efeito 3D sutil no hover */
         }
 
         .avatar {
@@ -92,11 +156,12 @@
             object-fit: cover;
             border: 3px solid var(--bg-surface);
             box-shadow: 0 0 30px var(--glow);
-            transition: var(--transition);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .avatar:hover {
-            transform: scale(1.05) rotate(2deg);
+        .avatar-container:hover .avatar {
+            transform: scale(1.05) rotateY(10deg) rotateX(5deg);
+            box-shadow: 0 0 40px rgba(14, 165, 233, 0.6);
         }
 
         .name {
@@ -106,13 +171,25 @@
             margin-bottom: 5px;
         }
 
+        /* Container do Typewriter Effect */
+        .title-container {
+            min-height: 24px;
+            margin-bottom: 25px;
+        }
+
         .title {
             font-family: 'Fira Code', monospace;
             color: var(--accent-secondary);
             font-size: 0.9rem;
             font-weight: 600;
-            margin-bottom: 25px;
+            display: inline-block;
         }
+        /* Cursor piscando para o efeito de máquina de escrever */
+        .title::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
 
         .contact-list {
             display: flex;
@@ -133,7 +210,7 @@
 
         .contact-item:hover {
             color: var(--accent-secondary);
-            transform: translateX(5px);
+            transform: translateX(8px);
         }
 
         .contact-item i {
@@ -168,7 +245,7 @@
         }
 
         .skill-tag {
-            background: rgba(14, 165, 233, 0.1);
+            background: rgba(14, 165, 233, 0.05);
             color: var(--accent-secondary);
             padding: 6px 12px;
             border-radius: 8px;
@@ -183,7 +260,7 @@
             background: var(--accent-primary);
             color: #fff;
             box-shadow: 0 0 15px var(--glow);
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.05);
         }
 
         .cert-list {
@@ -209,7 +286,9 @@
             font-size: 0.7rem;
         }
 
-        /* --- Main Content --- */
+        /* ==========================================================================
+           5. CONTEÚDO PRINCIPAL (MAIN)
+           ========================================================================== */
         .main-content {
             display: flex;
             flex-direction: column;
@@ -236,6 +315,11 @@
             background: rgba(14, 165, 233, 0.1);
             padding: 12px;
             border-radius: 12px;
+            transition: transform 0.4s ease;
+        }
+        
+        .section:hover .section-header i {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .summary-text {
@@ -249,7 +333,9 @@
             color: var(--text-primary);
         }
 
-        /* Timeline / Accordion */
+        /* ==========================================================================
+           6. LINHA DO TEMPO E ACORDEÕES
+           ========================================================================== */
         .timeline {
             position: relative;
             padding-left: 30px;
@@ -276,7 +362,7 @@
 
         .timeline-item:hover {
             border-color: rgba(14, 165, 233, 0.4);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
         }
 
         .timeline-dot {
@@ -290,9 +376,13 @@
             border-radius: 50%;
             box-shadow: 0 0 10px var(--glow);
             z-index: 2;
+            transition: transform 0.3s;
+        }
+        .timeline-item.active .timeline-dot {
+            transform: scale(1.3);
+            background: var(--accent-primary);
         }
 
-        /* Interactive Header */
         .accordion-header {
             padding: 20px 25px;
             cursor: pointer;
@@ -336,7 +426,7 @@
 
         .toggle-icon {
             color: var(--text-secondary);
-            transition: transform 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Efeito elástico */
             font-size: 1.2rem;
             background: rgba(255, 255, 255, 0.05);
             width: 36px;
@@ -347,7 +437,6 @@
             border-radius: 50%;
         }
 
-        /* Accordion Content Hidden by default */
         .accordion-body {
             max-height: 0;
             overflow: hidden;
@@ -361,9 +450,8 @@
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
-        /* Active State */
         .timeline-item.active .accordion-body {
-            max-height: 2000px; /* Grande o suficiente para o conteúdo */
+            max-height: 2000px; 
             transition: max-height 0.8s ease-in-out;
         }
 
@@ -377,7 +465,7 @@
             transform: rotate(180deg);
             background: var(--accent-primary);
             color: #fff;
-            box-shadow: 0 0 10px var(--glow);
+            box-shadow: 0 0 15px var(--glow);
         }
 
         .job-desc {
@@ -410,9 +498,17 @@
             margin-top: 20px;
             font-size: 0.9rem;
             color: var(--text-primary);
+            transition: var(--transition);
+        }
+        
+        .highlight-box:hover {
+            background: rgba(56, 189, 248, 0.1);
+            border-left-width: 5px;
         }
 
-        /* Grid para Projetos - Interativo */
+        /* ==========================================================================
+           7. GRID DE PROJETOS EXPANSÍVEIS
+           ========================================================================== */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -424,10 +520,9 @@
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-md);
             padding: 25px;
-            transition: var(--transition);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
             cursor: pointer;
             position: relative;
-            overflow: hidden;
         }
 
         .project-card::after {
@@ -445,9 +540,9 @@
         }
 
         .project-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             border-color: var(--accent-primary);
-            box-shadow: 0 10px 20px var(--glow);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4), 0 0 15px rgba(14, 165, 233, 0.2);
         }
 
         .project-card:hover::after {
@@ -467,9 +562,9 @@
         .project-desc {
             font-size: 0.9rem;
             color: var(--text-secondary);
-            max-height: 60px; /* Preview height */
+            max-height: 60px;
             overflow: hidden;
-            transition: max-height 0.5s ease;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
 
@@ -482,6 +577,11 @@
             height: 30px;
             background: linear-gradient(transparent, var(--bg-surface-light));
             transition: opacity 0.3s;
+        }
+
+        .project-card.active {
+            transform: scale(1.02);
+            border-color: var(--accent-primary);
         }
 
         .project-card.active .project-desc {
@@ -499,7 +599,9 @@
             color: var(--text-secondary);
         }
 
-        /* Botão Flutuante PDF */
+        /* ==========================================================================
+           8. BOTÃO FLUTUANTE (PDF) E MEDIA QUERIES
+           ========================================================================== */
         .btn-pdf {
             position: fixed;
             bottom: 30px;
@@ -516,22 +618,22 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            transition: var(--transition);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             z-index: 1000;
         }
 
         .btn-pdf:hover {
             transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.5);
+            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.6);
         }
 
-        /* --- Otimização para Impressão (PDF) --- */
+        /* OTIMIZAÇÃO PARA IMPRESSÃO (PDF BLINDADO) */
         @media print {
             @page { margin: 0; size: A4; }
             body {
-                background: #ffffff;
-                color: #111827;
-                background-image: none;
+                background: #ffffff !important;
+                color: #111827 !important;
+                background-image: none !important;
                 font-size: 10pt;
             }
             .container {
@@ -541,15 +643,21 @@
                 grid-template-columns: 260px 1fr;
                 gap: 25px;
             }
+            /* Desativa efeitos de JavaScript na impressão */
+            .reveal { opacity: 1 !important; transform: none !important; }
+            .spotlight-card::before { display: none !important; }
+            .spotlight-card { border: none !important; box-shadow: none !important; background: transparent !important;}
+            
             .profile-card, .widget, .section, .timeline-item, .project-card {
-                background: transparent;
-                border: none;
-                box-shadow: none;
-                padding: 0;
-                backdrop-filter: none;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                backdrop-filter: none !important;
             }
+            
             .timeline-item { margin-bottom: 20px; }
-            .profile-card::before { display: none; }
+            .profile-card::after { display: none !important; }
             .section { margin-bottom: 20px; }
             .section-header {
                 padding-bottom: 5px;
@@ -558,9 +666,9 @@
             }
             .section-header i { background: transparent; padding: 0; color: #0284c7; }
             .timeline::before { background: #e5e7eb; top: 10px; }
-            .timeline-dot { border-color: #0284c7; background: #fff; top: 10px; }
+            .timeline-dot { border-color: #0284c7; background: #fff !important; top: 10px; transform: scale(1) !important;}
             
-            /* Forçar todos os Acordeões a aparecerem no PDF */
+            /* FORÇA TODOS OS ACORDEÕES A FICAREM ABERTOS NO PDF */
             .accordion-body { max-height: none !important; overflow: visible !important; }
             .accordion-body-inner { opacity: 1 !important; transform: translateY(0) !important; padding: 0 0 10px 0 !important; }
             .accordion-header { padding: 0 0 10px 0 !important; pointer-events: none; }
@@ -568,18 +676,21 @@
             .project-card .project-desc { max-height: none !important; }
             .project-card .project-desc::after { display: none !important; }
             .project-card::after { display: none !important; }
+            
+            /* Remove a animação do Typewriter para PDF */
+            .title::after { display: none !important; }
 
-            .avatar { border-color: #f3f4f6; box-shadow: none; width: 130px; height: 130px; }
+            .avatar { border-color: #f3f4f6; box-shadow: none; width: 130px; height: 130px; transform: none !important; }
             .name { color: #111827; font-size: 1.5rem; }
             .title, .job-meta span, .project-title, .widget-title { color: #0284c7; }
             .job-meta span { background: transparent; padding: 0; font-weight: 600; }
             .text-secondary, .summary-text, .job-desc li { color: #374151; }
             .summary-text strong { color: #111827; }
             .skill-tag { background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; padding: 4px 8px; }
-            .highlight-box { background: #f8fafc; border-left-color: #0284c7; color: #1f2937; padding: 10px; margin-top: 10px; }
-            .btn-pdf { display: none; }
+            .highlight-box { background: #f8fafc; border-left-color: #0284c7; color: #1f2937; padding: 10px; margin-top: 10px; border-left-width: 3px !important; }
+            .btn-pdf { display: none !important; }
             .projects-grid { grid-template-columns: 1fr; gap: 15px; }
-            .project-card { border-left: 2px solid #e5e7eb; padding-left: 15px; border-radius: 0; margin-bottom: 15px; }
+            .project-card { border-left: 2px solid #e5e7eb !important; padding-left: 15px !important; border-radius: 0 !important; margin-bottom: 15px; transform: none !important; }
         }
 
         /* Responsividade Mobile */
@@ -601,12 +712,14 @@
 
     <div class="container">
         <aside class="sidebar">
-            <div class="profile-card">
+            <div class="profile-card spotlight-card reveal">
                 <div class="avatar-container">
                     <img src="profile.jpg" alt="Ítalo Araújo Trovão" class="avatar" onerror="this.src='https://via.placeholder.com/180/1e293b/0ea5e9?text=IT'">
                 </div>
                 <h1 class="name">Ítalo A. Trovão</h1>
-                <div class="title">Tech Lead Data & AI Specialist</div>
+                <div class="title-container">
+                    <div class="title" id="typewriter" data-text="Tech Lead Data & AI Specialist"></div>
+                </div>
                 
                 <div class="contact-list">
                     <a href="tel:+5561983759512" class="contact-item">
@@ -624,7 +737,7 @@
                 </div>
             </div>
 
-            <div class="widget">
+            <div class="widget spotlight-card reveal" style="transition-delay: 0.1s;">
                 <h3 class="widget-title"><i class="fas fa-brain"></i> AI & Data Stack</h3>
                 <div class="skill-tags">
                     <span class="skill-tag">Python (Advanced)</span>
@@ -638,7 +751,7 @@
                 </div>
             </div>
 
-            <div class="widget">
+            <div class="widget spotlight-card reveal" style="transition-delay: 0.2s;">
                 <h3 class="widget-title"><i class="fas fa-server"></i> Cloud & DB Stack</h3>
                 <div class="skill-tags">
                     <span class="skill-tag">Oracle EXACC</span>
@@ -651,7 +764,7 @@
                 </div>
             </div>
 
-            <div class="widget">
+            <div class="widget spotlight-card reveal" style="transition-delay: 0.3s;">
                 <h3 class="widget-title"><i class="fas fa-shield-alt"></i> Governança & Agile</h3>
                 <ul class="cert-list">
                     <li>ITIL v3 Foundation & OSA</li>
@@ -665,7 +778,7 @@
 
         <main class="main-content">
             
-            <section class="section">
+            <section class="section spotlight-card reveal">
                 <h2 class="section-header"><i class="fas fa-terminal"></i> Resumo Executivo</h2>
                 <p class="summary-text">
                     Especialista em TI e Desenvolvedor Sênior com mais de <strong>13 anos de experiência</strong> projetando, implementando e sustentando arquiteturas complexas de dados e soluções de software multicloud. Possuo uma sólida progressão de carreira, evoluindo do suporte técnico à engenharia de dados e liderança técnica de banco de dados para sistemas de missão crítica governamentais.
@@ -675,12 +788,12 @@
                 </p>
             </section>
 
-            <section class="section">
+            <section class="section spotlight-card reveal">
                 <h2 class="section-header"><i class="fas fa-laptop-code"></i> Experiência Profissional <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-secondary); margin-left: auto;">(Clique para expandir)</span></h2>
                 <div class="timeline">
                     
-                    <div class="timeline-item active"> <div class="timeline-dot"></div>
-                        
+                    <div class="timeline-item active"> 
+                        <div class="timeline-dot"></div>
                         <div class="accordion-header" onclick="toggleAccordion(this)">
                             <div class="accordion-header-content">
                                 <h3 class="job-title">Administrador / Gerente de Banco de Dados</h3>
@@ -700,13 +813,15 @@
                                     <li>Gestão de capacidade, disponibilidade e liderança técnica na modernização contínua dos sistemas tecnológicos corporativos.</li>
                                     <li>Otimização preditiva de queries, tuning e detecção de anomalias na infraestrutura antes que afetem a disponibilidade do banco de dados.</li>
                                 </ul>
+                                <div class="highlight-box">
+                                    <strong><i class="fas fa-robot"></i> AI & Automation Impact:</strong> Implementação de rotinas em Python utilizando inteligência artificial para otimização preditiva de queries, tuning autônomo e detecção de anomalias na infraestrutura.
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        
                         <div class="accordion-header" onclick="toggleAccordion(this)">
                             <div class="accordion-header-content">
                                 <h3 class="job-title">Fundador & Consultor de Tecnologia</h3>
@@ -732,7 +847,6 @@
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        
                         <div class="accordion-header" onclick="toggleAccordion(this)">
                             <div class="accordion-header-content">
                                 <h3 class="job-title">Consultor de Processos em ITSM</h3>
@@ -756,7 +870,6 @@
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        
                         <div class="accordion-header" onclick="toggleAccordion(this)">
                             <div class="accordion-header-content">
                                 <h3 class="job-title">Analista de Qualidade de TI (Jr a Pleno)</h3>
@@ -780,7 +893,6 @@
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        
                         <div class="accordion-header" onclick="toggleAccordion(this)">
                             <div class="accordion-header-content">
                                 <h3 class="job-title">Histórico Inicial: Suporte N1 & Estágio TI</h3>
@@ -804,32 +916,32 @@
                 </div>
             </section>
 
-            <section class="section">
+            <section class="section spotlight-card reveal">
                 <h2 class="section-header"><i class="fas fa-layer-group"></i> Projetos de Destaque</h2>
                 <div class="projects-grid">
                     
-                    <div class="project-card" onclick="this.classList.toggle('active')">
+                    <div class="project-card spotlight-card" onclick="this.classList.toggle('active')">
                         <h3 class="project-title">TechnoBolt Solutions <i class="fas fa-expand-alt" style="font-size: 0.8rem;"></i></h3>
                         <div class="project-desc">
                             Arquiteto principal e desenvolvedor de um ecossistema de soluções tecnológicas B2B pela <strong>TechnoBolt Solutions</strong>, integrando lógica de negócios complexa, Inteligência Artificial e gestão de dados escalável. O projeto engloba modelagem avançada, desenvolvimento de APIs e automação corporativa em tempo real.
                         </div>
                     </div>
 
-                    <div class="project-card" onclick="this.classList.toggle('active')">
+                    <div class="project-card spotlight-card" onclick="this.classList.toggle('active')">
                         <h3 class="project-title">Pipelines RNDS (Min. Saúde) <i class="fas fa-expand-alt" style="font-size: 0.8rem;"></i></h3>
                         <div class="project-desc">
                             Engenharia e implementação de pipelines críticos de processamento de dados massivos escritos em Python para a Rede Nacional de Dados em Saúde (RNDS) do Brasil. O projeto integrou múltiplos data lakes, garantindo conformidade, segurança, higienização dos dados e altíssima performance de disponibilidade.
                         </div>
                     </div>
 
-                    <div class="project-card" onclick="this.classList.toggle('active')">
+                    <div class="project-card spotlight-card" onclick="this.classList.toggle('active')">
                         <h3 class="project-title">BI Executivo Institucional <i class="fas fa-expand-alt" style="font-size: 0.8rem;"></i></h3>
                         <div class="project-desc">
                             Projeto analítico de grande escala onde estruturei os Data Marts e desenvolvi 60 dashboards interativos avançados (utilizando DAX profundo) para a gestão técnica de infraestrutura, permitindo uma visão executiva em tempo real dos SLAs, consumo de nuvem e estabilidade dos bancos de dados no Ministério da Saúde.
                         </div>
                     </div>
 
-                    <div class="project-card" onclick="this.classList.toggle('active')">
+                    <div class="project-card spotlight-card" onclick="this.classList.toggle('active')">
                         <h3 class="project-title">Otimização Cloud (TCU) <i class="fas fa-expand-alt" style="font-size: 0.8rem;"></i></h3>
                         <div class="project-desc">
                             Liderança técnica na estruturação de processos de eficiência e otimização de infraestrutura no Tribunal de Contas da União. Projeto envolveu planejamento arquitetural e implementação nativa de banco de dados em formato Oracle Multitenant, visando severa redução de custos computacionais e escalabilidade elástica.
@@ -839,7 +951,7 @@
                 </div>
             </section>
 
-            <section class="section">
+            <section class="section spotlight-card reveal">
                 <h2 class="section-header"><i class="fas fa-graduation-cap"></i> Formação Acadêmica</h2>
                 <div class="timeline" style="margin-top: 20px;">
                     <div class="timeline-item" style="background: transparent; border: none; box-shadow: none; margin-bottom: 15px;">
@@ -859,17 +971,70 @@
     </div>
 
     <script>
-        function toggleAccordion(element) {
-            // Alterna a classe 'active' no elemento pai (.timeline-item)
-            const parentItem = element.parentElement;
+        document.addEventListener("DOMContentLoaded", () => {
             
-            // Lógica opcional: Descomente as linhas abaixo se quiser que apenas UMA aba fique aberta por vez
-            /*
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                if(item !== parentItem) item.classList.remove('active');
+            // 1. EFEITO SPOTLIGHT (MOUSE TRACKING GLOW)
+            // Lógica: Calcula a posição X e Y do mouse em relação ao card e injeta no CSS via variáveis.
+            const spotlightCards = document.querySelectorAll('.spotlight-card');
+            
+            spotlightCards.forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
             });
-            */
+
+            // 2. INTERSECTION OBSERVER (SCROLL REVEAL ANIMATION)
+            // Lógica: Adiciona a classe 'visible' assim que o elemento entra 15% na tela do usuário.
+            const revealElements = document.querySelectorAll('.reveal');
             
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Para animar apenas uma vez
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealOnScroll.observe(el);
+            });
+
+            // 3. TYPEWRITER EFFECT (MÁQUINA DE ESCREVER)
+            // Lógica: Pega a string do data-attribute e "digita" caracter por caracter após um breve delay.
+            const typewriterEl = document.getElementById('typewriter');
+            const textToType = typewriterEl.getAttribute('data-text');
+            let i = 0;
+            
+            // Delay inicial para sincronizar com o carregamento visual da página
+            setTimeout(() => {
+                typeWriter();
+            }, 500);
+
+            function typeWriter() {
+                if (i < textToType.length) {
+                    typewriterEl.innerHTML += textToType.charAt(i);
+                    i++;
+                    // Velocidade variável para simular digitação humana
+                    const speed = Math.floor(Math.random() * (100 - 50 + 1) + 50); 
+                    setTimeout(typeWriter, speed);
+                }
+            }
+        });
+
+        // 4. LÓGICA DOS ACORDEÕES DA TIMELINE
+        function toggleAccordion(element) {
+            const parentItem = element.parentElement;
+            // Alterna a aba clicada
             parentItem.classList.toggle('active');
         }
     </script>
