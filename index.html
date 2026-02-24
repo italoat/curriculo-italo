@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículo - Ítalo Araújo Trovão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0b1120;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.4);
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        /* Lateral (Sidebar) */
+        .sidebar {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .profile-pic-container {
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-pic {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--card-bg);
+            box-shadow: 0 0 20px var(--accent-glow);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.05);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-align: center;
+            margin-top: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .role {
+            color: var(--accent);
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-item i {
+            color: var(--accent);
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .skills h3, .sidebar-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* Conteúdo Principal */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2 i {
+            color: var(--accent);
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* Timeline de Experiência */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            border-left: 2px solid var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .job-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .company-date {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        ul li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Botão PDF */
+        .pdf-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: #000;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-weight: 800;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 20px var(--accent-glow);
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .pdf-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.6);
+        }
+
+        /* Impressão (PDF) */
+        @media print {
+            body {
+                background: #fff;
+                color: #000;
+            }
+            .container {
+                margin: 0;
+                padding: 0;
+                grid-template-columns: 280px 1fr;
+                gap: 20px;
+                max-width: 100%;
+            }
+            .sidebar {
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                box-shadow: none;
+                color: #000;
+            }
+            section {
+                background: #fff;
+                border: none;
+                box-shadow: none;
+                padding: 10px 20px;
+            }
+            .pdf-btn {
+                display: none;
+            }
+            .tag {
+                background: #e0f2fe;
+                color: #0369a1;
+                border: 1px solid #bae6fd;
+            }
+            .role, .company-date, h2 i, ul li::before, .contact-item i {
+                color: #0284c7;
+            }
+            --text-secondary: #334155;
+            --text-primary: #0f172a;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="pdf-btn" onclick="window.print()">
+        <i class="fas fa-file-pdf"></i> Salvar em PDF
+    </button>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="profile-pic-container">
+                <img src="profile.jpg" alt="Foto de Ítalo Trovão" class="profile-pic" onerror="this.src='https://via.placeholder.com/180x180/1e293b/38bdf8?text=IT'">
+            </div>
+            
+            <div>
+                <h1>Ítalo Araújo Trovão</h1>
+                <div class="role">Tech Lead de Dados &<br>Especialista IA/Cloud</div>
+            </div>
+
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>+55 (61) 98375-9512</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>italotrovao@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    <span>/in/italotrovao</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Águas Lindas de Goiás / DF</span>
+                </div>
+            </div>
+
+            <div class="skills">
+                <h3>Core Stack & Tecnologias</h3>
+                <div class="tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Inteligência Artificial</span>
+                    <span class="tag">Power BI & DAX</span>
+                    <span class="tag">Oracle EXACC/RDS</span>
+                    <span class="tag">AWS / OCI</span>
+                    <span class="tag">Apache Airflow</span>
+                    <span class="tag">Apache NiFi</span>
+                    <span class="tag">ETL & Automação</span>
+                    <span class="tag">ITIL / COBIT / Scrum</span>
+                    <span class="tag">Jira / Zabbix / Grafana</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Certificações</h3>
+                <div class="contact-info">
+                    <span class="contact-item"><i class="fas fa-certificate"></i> OCDMF2023 & OCIF2023</span>
+                    <span class="contact-item"><i class="fas fa-certificate"></i> ISO 20000 & 27001</span>
+                    <span class="contact-item"><i class="fas fa-certificate"></i> ITIL OSA & v3 Foundation</span>
+                    <span class="contact-item"><i class="fas fa-certificate"></i> DevOps & Scrum Found.</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <section>
+                <h2><i class="fas fa-user-astronaut"></i> Resumo Executivo</h2>
+                <p>Especialista em TI com mais de 13 anos de experiência, unindo liderança técnica em infraestrutura de banco de dados, arquitetura multicloud e engenharia de software. Focado em impulsionar a inovação corporativa através da integração de Inteligência Artificial e automação avançada em Python.</p>
+                <p>Capacidade comprovada de transformar dados complexos em inteligência de negócios através de pipelines ETL robustos (NiFi, Airflow, PowerCenter) e ecossistemas de visualização em Power BI com DAX. Experiente na administração e sustentação de bancos de dados relacionais e NoSQL, aliando forte governança de processos ITIL a entregas ágeis.</p>
+            </section>
+
+            <section>
+                <h2><i class="fas fa-briefcase"></i> Experiência Profissional</h2>
+                <div class="timeline">
+                    
+                    <div class="timeline-item">
+                        <div class="job-title">Gerente Técnico de Banco de Dados</div>
+                        <div class="company-date">Central IT | 01/2023 – Atualmente</div>
+                        <ul>
+                            <li>Lidera a sustentação e otimização de bases de dados relacionais e NoSQL de missão crítica para os sistemas do Ministério da Saúde.</li>
+                            <li>Desenvolve
